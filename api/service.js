@@ -12,35 +12,34 @@ const path = require('path');
 //注册功能
 exports.register = function(req,res){
 
-   let info = req.body
+   var info = req.body
 
    var user = {}
-    for(let key in info){
+    for(var key in info){
         user = key;
     }
    var userdata = JSON.parse(user)
 
-   let sql = 'select * from user '
+   var sql = 'select * from user '
    db.base(sql,null,function(result){
 
    	var obj = {};
-   	for(let i = 0;i<result.length;i++){
+   	for(var i = 0;i<result.length;i++){
    		if(result[i].username==userdata.username){
    			obj.result=-1;
    			obj.message="用户名已存在";
          }
      }
-
        if(obj.hasOwnProperty("result")){
            res.json(obj)
          }else{
-         	let sql='insert user set?';
-         	let data = {
+         	var sql='insert user set?';
+         	var data = {
          		username:userdata.username,
          		password:userdata.password
          	}
          	db.base(sql,data,function(){
-         		let obj = {
+         		var obj = {
          			result:0,
          			message:"注册成功"
          		}
@@ -58,19 +57,19 @@ exports.register = function(req,res){
 
 exports.login = function(req,res){
 
-   let info = req.body
+   var info = req.body
 
    var user = {}
-    for(let key in info){
+    for(var key in info){
         user = key;
     }
    var userdata = JSON.parse(user)
 
-   let sql = 'select * from user '
+   var sql = 'select * from user '
    db.base(sql,null,function(result){
 
    	var obj = {};
-   	for(let i = 0;i<result.length;i++){
+   	for(var i = 0;i<result.length;i++){
    		if(result[i].username==userdata.username&&result[i].password==userdata.password){
    			obj.result=0;
    			obj.message="登录成功";
@@ -96,3 +95,94 @@ exports.login = function(req,res){
 
 })
 }
+
+// 列表接口
+exports.booklist = function(req,res){
+  var sql = 'select * from bookAll';
+  db.base(sql,null,function(result){
+  	var obj = {}
+  	obj.data = result;
+  	obj.result = 0;
+  	obj.message = "获取成功"
+  	res.json(obj)
+  	console.log(result)
+  })
+}
+
+//新增图书接口
+exports.addbook = function(req,res){
+	var info = req.body;
+
+	var book = {}
+    for(var key in info){
+        book = key;
+    }
+   var bookdata = JSON.parse(book);
+
+   var sql = 'insert bookAll set?';
+   var data = {
+   	  bookname:bookdata.bookname,
+   	  auter:bookdata.auter,
+   	  decript:bookdata.decript
+   }
+   db.base(sql,data,function(result){
+   	  if(result.affectedRows == 1){
+   	  	 var obj = {
+   	  	 	result:0,
+   	  	 	message:"新增成功"
+   	  	 }
+         res.json(obj)
+   	  }else{
+   	  	 var obj = {
+   	  	 	result:1,
+   	  	 	message:"新增失败"
+   	  	 }
+         res.json(obj)
+   	  }
+   })
+
+}
+
+//删除接口
+exports.bookdelete = function(req,res){
+    var id = req.params.id;
+    console.log(id)
+    var sql = 'delete from bookAll where id=?';
+    var data = [id];
+    db.base(sql,data,function(result){
+       if(result.affectedRows == 1){
+       	var obj = {
+   	  	 	result:0,
+   	  	 	message:"删除成功"
+   	  	 }
+         res.json(obj)
+       }
+    })
+}
+
+//更新接口
+exports.bookupdate = function(req,res){
+	var info = req.body;
+	var book = {}
+    for(var key in info){
+        book = key;
+    }
+   var bookdata = JSON.parse(book);
+   var sql = 'update bookAll set bookname=?,auter=?,decript=? where id=?';
+
+   var data = [bookdata.bookname,bookdata.auter,bookdata.decript,bookdata.id]
+
+   db.base(sql,data,function(result){
+   	if(result.affectedRows==1){
+      	var obj = {
+   	  	 	result:0,
+   	  	 	message:"修改成功"
+   	  	 }
+         res.json(obj)
+   	}
+   })
+   
+
+}
+//搜索接口
+

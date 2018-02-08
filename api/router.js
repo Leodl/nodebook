@@ -19,6 +19,10 @@ router.use(function timeLog(req, res, next) {
 // 定义网站主页的路由
 router.post('/book/register',service.register)
 router.post('/book/login',service.login)
+router.get('/book/booklist',service.booklist)
+router.post('/book/addbook',service.addbook)
+router.delete('/book/delete/:id',service.bookdelete)
+router.put('/book/update',service.bookupdate)
 
 
 
