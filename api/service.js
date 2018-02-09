@@ -105,7 +105,6 @@ exports.booklist = function(req,res){
   	obj.result = 0;
   	obj.message = "获取成功"
   	res.json(obj)
-  	console.log(result)
   })
 }
 
@@ -146,7 +145,6 @@ exports.addbook = function(req,res){
 //删除接口
 exports.bookdelete = function(req,res){
     var id = req.params.id;
-    console.log(id)
     var sql = 'delete from bookAll where id=?';
     var data = [id];
     db.base(sql,data,function(result){
@@ -185,4 +183,21 @@ exports.bookupdate = function(req,res){
 
 }
 //搜索接口
+exports.booksearch = function(req,res){
+	var bookname = req.body.bookname;
+
+	var sql = 'select * from bookAll where bookname like"%'+bookname+'%"'; //模糊查询
+	db.base(sql,null,function(result){
+
+		var obj = {
+			data:"",
+			result:0,
+			message:'查询成功'
+		}
+		obj.data=result;
+		res.json(obj)
+	})
+    
+
+}
 

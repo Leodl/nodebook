@@ -23,6 +23,7 @@ router.get('/book/booklist',service.booklist)
 router.post('/book/addbook',service.addbook)
 router.delete('/book/delete/:id',service.bookdelete)
 router.put('/book/update',service.bookupdate)
+router.post('/book/search',service.booksearch)
 
 
 

@@ -57,8 +57,9 @@ var user = function(){
             	console.log(res)
             	if(res.result==0){
                   swal(res.message)
+                  window.location.href="bookhome.html"
             	}else{
-                  swal(res.message,"You clicked the button!","warning")
+                  swal(res.message,"请先注册","warning")
             	}
             }
           })
@@ -168,6 +169,30 @@ var user = function(){
       		}
       	})
 
+      }
+
+      obj.search = function(){
+      	var bookname = $("#searchbook").val();
+      	console.log(bookname)
+
+      	$.ajax({
+      		url:'/book/search',
+      		type:'post',
+      		dataType : 'json',
+      		data:{bookname:bookname},
+      		success:function(res){
+      			if(res.result==0){
+                   swal(res.message,"You clicked the button!","success");
+                   var html = "";
+                   $.map(res.data,function(val,i){
+            		html+="<tr valid='val.id'><td>"+i+"</td><td>"+val.bookname+"</td><td>"+val.auter+"</td><td>"+val.decript+"</td><td><button onclick='user.edit(this)' valid='"+val.id+"' type='button' class='btn btn-primary'>编辑</button><button valid='"+val.id+"' onclick='user.delete(this)' type='button' class='btn btn-danger' style='margin-left: 10px;''>删除</button></td></tr>"
+            	})
+                  	$("#tbody").html(html)
+      			}
+
+      		}
+
+      	})
       }
 
 
