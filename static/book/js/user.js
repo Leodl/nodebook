@@ -10,8 +10,10 @@ var user = function(){
       obj.submit = function(event){
           var username = $("#username").val();
           var password = $("#password").val();
-            if(username==""||password==""){
+          console.log(username)
+            if($.trim(username)==""||$.trim(password)==""){
             swal("用戶名密碼不能為空","You clicked the button!","warning");
+            return;
           }
           const data = {
           	username:username,
