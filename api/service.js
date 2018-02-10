@@ -7,50 +7,48 @@
 
 const db = require('./db.js');
 const path = require('path');
+const crypto = require('crypto');
+
 
 
 //注册功能
 exports.register = function(req,res){
-
    var info = req.body
 
    var user = {}
     for(var key in info){
         user = key;
     }
-   var userdata = JSON.parse(user)
+   var userdata = JSON.parse(user);
+   var md5 = crypto.createHash("md5");
+   var newPassword = md5.update(userdata.password).digest("hex");  //密码加密
 
-   var sql = 'select * from user '
+   var sql = "select * from user where username='"+userdata.username+"'";
+
    db.base(sql,null,function(result){
 
-   	var obj = {};
-   	for(var i = 0;i<result.length;i++){
-   		if(result[i].username==userdata.username){
-   			obj.result=-1;
-   			obj.message="用户名已存在";
-         }
-     }
-       if(obj.hasOwnProperty("result")){
-           res.json(obj)
+         if(result.length==0){
+            var sql = 'insert user set?';
+            var data = {
+             username:userdata.username,
+             password:newPassword
+           }
+           db.base(sql,data,function(){
+             var obj = {
+               result:0,
+               message:"注册成功"
+             }
+             res.json(obj)
+           })
+
          }else{
-         	var sql='insert user set?';
-         	var data = {
-         		username:userdata.username,
-         		password:userdata.password
-         	}
-         	db.base(sql,data,function(){
-         		var obj = {
-         			result:0,
-         			message:"注册成功"
-         		}
-         		res.json(obj)
-         	})
+          var obj = {
+               result:-1,
+               message:"用户名已存在"
+             }
+             res.json(obj)
          }
-
-
-      })
-
-  
+   })
 }
 
 //登录接口
@@ -65,41 +63,42 @@ exports.login = function(req,res){
     }
    var userdata = JSON.parse(user)
 
-   var sql = 'select * from user '
+   var md5 = crypto.createHash("md5");
+   var newPassword = md5.update(userdata.password).digest("hex");
+   console.log(newPassword)
+   
+
+   var sql = "select * from user where username='"+userdata.username+"'";
    db.base(sql,null,function(result){
-
-   	var obj = {};
-   	for(var i = 0;i<result.length;i++){
-   		if(result[i].username==userdata.username&&result[i].password==userdata.password){
-   			obj.result=0;
-   			obj.message="登录成功";
-         }
+   console.log(result)
+   if(result.length==0){
+         var obj = {};
+         obj.result=-1;
+         obj.message="用户名不存在";
+         res.json(obj)
+   }else{
+      if(result[0].password==newPassword){
+         var obj = {};
+         obj.result=0;
+         obj.message="登录成功";
+         res.json(obj)
+      }else{
+        var obj = {};
+         obj.result=-1;
+         obj.message="密码错误";
+         res.json(obj)
+      }
+   }
      
-         if(result[i].username==userdata.username&&result[i].password!==userdata.password){
-            obj.result=-1;
-   			obj.message="密码错误";
-         }
-
-      //      if(result[i].username!==userdata.username){
-      //       obj.result=-1;
-   			// obj.message="您还没有注册";
-   			// return;
-      //    }
-     }
-
-
-
-       if(obj.hasOwnProperty("result")){
-           res.json(obj)
-         }
-
 })
+
 }
 
 // 列表接口
 exports.booklist = function(req,res){
   var sql = 'select * from bookAll';
   db.base(sql,null,function(result){
+    console.log(result)
   	var obj = {}
   	obj.data = result;
   	obj.result = 0;
