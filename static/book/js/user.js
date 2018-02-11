@@ -80,7 +80,7 @@ var user = function(){
             	var html = "";
             	$.map(res.data,function(val,i){
                 console.log(obj.qiniuurl+''+val.bookpic+'')
-            		html+="<tr valid='"+val.id+"'><td>"+i+"</td><td>"+val.bookname+"</td><td><img src='"+obj.qiniuurl+""+val.bookpic+"'/></td><td>"+val.auter+"</td><td>"+val.decript+"</td><td><button onclick='user.edit(this)' valid='"+val.id+"' type='button' class='btn btn-primary' data-toggle='modal' data-target='#edi_exampleModal' >编辑</button><button valid='"+val.id+"' onclick='user.delete(this)' type='button' class='btn btn-danger' style='margin-left: 10px;''>删除</button></td></tr>"
+            		html+="<tr valid='"+val.id+"'><td>"+i+"</td><td>"+val.bookname+"</td><td><img src='"+obj.qiniuurl+""+val.bookpic+"'/></td><td>"+val.auter+"</td><td style='width:40%;'>"+val.decript+"</td><td><button onclick='user.edit(this)' valid='"+val.id+"' type='button' class='btn btn-primary' data-toggle='modal' data-target='#edi_exampleModal' >编辑</button><button valid='"+val.id+"' onclick='user.delete(this)' type='button' class='btn btn-danger' style='margin-left: 10px;''>删除</button></td></tr>"
             	})
 
             	$("#tbody").html(html)
@@ -229,7 +229,7 @@ var user = function(){
                    swal(res.message,"You clicked the button!","success");
                    var html = "";
                    $.map(res.data,function(val,i){
-            		html+="<tr valid='"+val.id+"'><td>"+i+"</td><td>"+val.bookname+"</td><td><img src='"+obj.qiniuurl+""+val.bookpic+"'/></td><td>"+val.auter+"</td><td>"+val.decript+"</td><td><button onclick='user.edit(this)' valid='"+val.id+"' type='button' class='btn btn-primary' data-toggle='modal' data-target='#edi_exampleModal' >编辑</button><button valid='"+val.id+"' onclick='user.delete(this)' type='button' class='btn btn-danger' style='margin-left: 10px;''>删除</button></td></tr>"
+            		html+="<tr valid='"+val.id+"'><td>"+i+"</td><td>"+val.bookname+"</td><td><img src='"+obj.qiniuurl+""+val.bookpic+"'/></td><td>"+val.auter+"</td><td style='width:40%;'>"+val.decript+"</td><td><button onclick='user.edit(this)' valid='"+val.id+"' type='button' class='btn btn-primary' data-toggle='modal' data-target='#edi_exampleModal' >编辑</button><button valid='"+val.id+"' onclick='user.delete(this)' type='button' class='btn btn-danger' style='margin-left: 10px;''>删除</button></td></tr>"
             	})
                   	$("#tbody").html(html)
       			}
