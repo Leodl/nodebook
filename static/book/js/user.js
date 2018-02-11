@@ -115,6 +115,8 @@ var user = function(){
          var bookname = $(dom).parent().parent().find("td:eq(1)").text();
          var bookpic = $(dom).parent().parent().find("td:eq(2)").find('img').attr("src").split('/')[3]=="null"?"null":$(dom).parent().parent().find("td:eq(2)").find('img').attr("src")
          console.log(bookpic)
+         var bookkey = $(dom).parent().parent().find("td:eq(2)").find('img').attr("src").split('/')[3]
+         obj.bookpic = bookkey;
          var auter = $(dom).parent().parent().find("td:eq(3)").text();
          var decript = $(dom).parent().parent().find("td:eq(4)").text();
          $("#edi_bookname").val(bookname);
@@ -143,15 +145,17 @@ var user = function(){
        var id = $("#edi_bookname").attr("bookid");
        var bookname = $("#edi_bookname").val();
        var auter =  $("#edi_autername").val();
-       var decript = $("#edi_bookdec").text()
+       var decript = $("#edi_bookdec").val()
+       console.log(decript)
 
       	var data = {
         	id:id,
         	bookname:bookname,
         	auter:auter,
-        	decript:decript
+        	decript:decript,
+          bookpic:obj.bookpic
         }
-        data.bookpic = obj.bookpic
+        //data.bookpic = obj.bookpic
         console.log(data)
 
         var datas = JSON.stringify(data)
