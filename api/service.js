@@ -121,7 +121,8 @@ exports.addbook = function(req,res){
    var data = {
    	  bookname:bookdata.bookname,
    	  auter:bookdata.auter,
-   	  decript:bookdata.decript
+   	  decript:bookdata.decript,
+      bookpic:bookdata.bookpic
    }
    db.base(sql,data,function(result){
    	  if(result.affectedRows == 1){
@@ -165,9 +166,9 @@ exports.bookupdate = function(req,res){
         book = key;
     }
    var bookdata = JSON.parse(book);
-   var sql = 'update bookAll set bookname=?,auter=?,decript=? where id=?';
+   var sql = 'update bookAll set bookname=?,auter=?,decript=?,bookpic=? where id=?';
 
-   var data = [bookdata.bookname,bookdata.auter,bookdata.decript,bookdata.id]
+   var data = [bookdata.bookname,bookdata.auter,bookdata.decript,bookdata.bookpic,bookdata.id]
 
    db.base(sql,data,function(result){
    	if(result.affectedRows==1){
@@ -198,5 +199,32 @@ exports.booksearch = function(req,res){
 	})
     
 
+}
+
+//图片上传
+exports.upimg = function(req,res){
+  var CryptoJS = require("crypto-js");
+  var base64encode = require('crypto-js/enc-base64');
+
+    var buckname = req.params.buckname
+
+    var qiniu = require("qiniu");
+    var Access_Key = "OAUqNJ9DrF61XHCYclUPvD7HTo-65sBra_wL-klv";
+    var Secret_Key = "przAVf2yDpWXunD-3TC60NOmiWdjlB0WNT7SMaXT";
+   
+
+    var mac = new qiniu.auth.digest.Mac(Access_Key, Secret_Key);
+    //要上传的空间
+    var bucket = buckname;
+
+    var options = {scope: bucket};
+      var putPolicy = new qiniu.rs.PutPolicy(options);
+      var uptoken = putPolicy.uploadToken(mac)
+      var obj = {
+        data:uptoken,
+        message:'获取七牛token成功'
+      }
+      res.json(obj)
+  
 }
 
