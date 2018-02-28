@@ -96,7 +96,10 @@ exports.login = function(req,res){
 
 // 列表接口
 exports.booklist = function(req,res){
-  var sql = 'select * from bookAll';
+  // var sql = 'select bookAll.auter,user.username from bookAll,user';
+  // var sql = 'select * from bookAll order by auter' 作者名排序
+  //var sql = 'select * from bookAll limit 4,5'; //分页
+  var sql = 'select * from bookAll'
   db.base(sql,null,function(result){
     console.log(result)
   	var obj = {}
@@ -124,6 +127,7 @@ exports.addbook = function(req,res){
    	  decript:bookdata.decript,
       bookpic:bookdata.bookpic
    }
+
    db.base(sql,data,function(result){
    	  if(result.affectedRows == 1){
    	  	 var obj = {

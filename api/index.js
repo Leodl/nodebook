@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 const router = require('./router.js');
 const app = express();
 
-app.use(express.static(path.join(__dirname,'../', 'static','book')));
+app.use(express.static(path.join(__dirname,'../', 'static','book'),{maxAge:1000*60*60}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(router)
 
